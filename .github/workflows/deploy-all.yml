@@ -9,6 +9,8 @@ on:
 jobs:
   build-all:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout umijs-mono-repo

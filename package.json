@@ -34,7 +34,7 @@
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.61",
-    "@share-component-lib/components": "file:../share-component-lib",
+    "@devnitinreddy/share-component-lib": "file:../share-component-lib",
     "@types/react": "^17.0.89",
     "@types/react-dom": "^17.0.26",
     "@umijs/preset-react": "^2.1.7",

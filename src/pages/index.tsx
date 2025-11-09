@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Banner } from '@share-component-lib/components'
+import { Banner } from '@devnitinreddy/share-component-lib'
 import { Container, Typography, Grid, Card, CardContent, Box, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import BusinessIcon from '@material-ui/icons/Business'

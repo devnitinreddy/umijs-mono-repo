@@ -1,0 +1,49 @@
+{
+  "name": "umijs-mono-repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+	"scripts": {
+		"start": "umi dev",
+		"start:clark": "cross-env UMI_ENV=clark umi dev --config .umirc.clark.ts",
+		"start:bruce": "cross-env UMI_ENV=bruce umi dev --config .umirc.bruce.ts",
+		"build": "yarn build:clark && yarn build:bruce",
+		"build:clark": "cross-env UMI_ENV=clark umi build --config .umirc.clark.ts",
+		"build:bruce": "cross-env UMI_ENV=bruce umi build --config .umirc.bruce.ts",
+		"verify-build": "node scripts/verify-build.js",
+		"pre-deploy": "sh scripts/pre-deploy-check.sh",
+		"deploy:check": "yarn pre-deploy",
+		"postinstall": "umi generate tmp",
+		"prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+		"test": "umi-test",
+		"test:coverage": "umi-test --coverage"
+	},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitinreddy3/umijs-mono-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nitinreddy3/umijs-mono-repo/issues"
+  },
+  "homepage": "https://github.com/nitinreddy3/umijs-mono-repo#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@share-component-lib/components": "file:../share-component-lib",
+    "@types/react": "^17.0.89",
+    "@types/react-dom": "^17.0.26",
+    "@umijs/preset-react": "^2.1.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^5.9.3",
+    "umi": "^3.5.43"
+  },
+  "devDependencies": {
+    "cross-env": "7.0.3"
+  }
+}

@@ -1,0 +1,56 @@
+name: Deploy Bruce Tenant
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'config/tenants/bruce.ts'
+      - 'src/**'
+      - '.umirc.bruce.ts'
+      - 'package.json'
+      - '.github/workflows/deploy-bruce.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Bruce tenant
+        run: yarn build:bruce
+        env:
+          NODE_ENV: production
+
+      - name: Copy .nojekyll to dist
+        run: cp .nojekyll dist/bruce/
+
+      - name: Deploy to GitHub Pages (Bruce)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/bruce
+          destination_dir: bruce
+          commit_message: 'Deploy Bruce tenant [skip ci]'
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: bruce-build
+          path: dist/bruce
+          retention-days: 30
+

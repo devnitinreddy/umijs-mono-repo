@@ -1,0 +1,60 @@
+name: Deploy All Tenants
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-all:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build all tenants
+        run: yarn build
+        env:
+          NODE_ENV: production
+
+      - name: Copy .nojekyll to dist folders
+        run: |
+          cp .nojekyll dist/clark/
+          cp .nojekyll dist/bruce/
+
+      - name: Deploy Clark to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/clark
+          destination_dir: clark
+          commit_message: 'Deploy Clark tenant [skip ci]'
+
+      - name: Deploy Bruce to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/bruce
+          destination_dir: bruce
+          commit_message: 'Deploy Bruce tenant [skip ci]'
+
+      - name: Upload all build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: all-tenants-build
+          path: dist/
+          retention-days: 30
+

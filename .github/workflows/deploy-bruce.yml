@@ -17,33 +17,51 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
+      - name: Checkout umijs-mono-repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: umijs-mono-repo
+
+      - name: Checkout share-component-lib
+        uses: actions/checkout@v4
+        with:
+          repository: devnitinreddy/share-component-lib
+          path: share-component-lib
+          fetch-depth: 1
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'yarn'
+          cache-dependency-path: umijs-mono-repo/yarn.lock
+
+      - name: Install and build share-component-lib
+        working-directory: share-component-lib
+        run: |
+          yarn install
+          yarn build
 
       - name: Install dependencies
+        working-directory: umijs-mono-repo
         run: yarn install
 
       - name: Build Bruce tenant
+        working-directory: umijs-mono-repo
         run: yarn build:bruce
         env:
           NODE_ENV: production
 
       - name: Copy .nojekyll to dist
+        working-directory: umijs-mono-repo
         run: cp .nojekyll dist/bruce/
 
       - name: Deploy to GitHub Pages (Bruce)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/bruce
+          publish_dir: ./umijs-mono-repo/dist/bruce
           destination_dir: bruce
           commit_message: 'Deploy Bruce tenant [skip ci]'
 
@@ -51,6 +69,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bruce-build
-          path: dist/bruce
+          path: umijs-mono-repo/dist/bruce
           retention-days: 30
 

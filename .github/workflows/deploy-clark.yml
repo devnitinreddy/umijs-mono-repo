@@ -18,12 +18,12 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'yarn'
@@ -40,7 +40,7 @@ jobs:
         run: cp .nojekyll dist/clark/
 
       - name: Deploy to GitHub Pages (Clark)
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/clark
@@ -48,7 +48,7 @@ jobs:
           commit_message: 'Deploy Clark tenant [skip ci]'
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: clark-build
           path: dist/clark
